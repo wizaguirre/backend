@@ -20,6 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::get('/clientes', 'Api\ApiController@customers');
+Route::get('/cliente/{id}', 'Api\ApiController@customerById');
+
 Route::get('/puertas', 'Api\ApiController@gateways');
+Route::get('/puertascliente/{id}', 'Api\ApiController@gatewaysByCustomer');
+
 Route::get('/personas', 'Api\ApiController@people');
 Route::get('/guardar', 'Api\ApiController@storeData');

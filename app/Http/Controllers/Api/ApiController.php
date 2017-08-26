@@ -17,6 +17,12 @@ class ApiController extends Controller
 		return $customers;
 	}
 
+    public function customerById($id){
+
+    	$customer = Customer::find($id);
+		return $customer;
+	}	
+
 	public function gateways(){
 
 		// $gateways = \App\Gateway::with('customer')->get();
@@ -29,6 +35,20 @@ class ApiController extends Controller
 
         return $gateways;
 
+	}
+
+	public function gatewaysByCustomer($id){
+
+		// $gateways = \App\Gateway::with('customer')->get();
+		// return $gateways;
+
+		$gateways = \DB::table('gateways')
+            ->select('gateways.id', 'gateways.name', 'gateways.description', 'customers.name' )
+            ->join('customers', 'gateways.customer_id', '=', 'customers.id')
+            ->where('customers.id', $id)
+            ->get();
+
+        return $gateways;
 
 	}
 
