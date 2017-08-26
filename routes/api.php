@@ -26,4 +26,4 @@ Route::get('/puertas', 'Api\ApiController@gateways');
 Route::get('/puertascliente/{id}', 'Api\ApiController@gatewaysByCustomer');
 
 Route::get('/personas', 'Api\ApiController@people');
-Route::get('/guardar', 'Api\ApiController@storeData');
+Route::post('/guardar', 'Api\ApiController@storeData');
