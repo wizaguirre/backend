@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Customer;
 
 
 /*
@@ -20,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/clientes', function(){
-	$clientes = \App\Customer::all();
-	return $clientes;
-});
+Route::get('/clientes', 'Api\ApiController@customers');
+Route::get('/puertas', 'Api\ApiController@gateways');
+Route::get('/personas', 'Api\ApiController@people');
+Route::get('/guardar', 'Api\ApiController@storeData');

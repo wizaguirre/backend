@@ -11,7 +11,17 @@ class Customer extends Model
 	use SoftDeletes;
 
     protected $fillable = [
-    	'name', 'contact', 'email', 'phone', 'address'
+    	'name', 
+    	'contact', 
+    	'email', 
+    	'phone', 
+    	'address'
+    ];
+
+    protected $hidden = [
+    	'deleted_at', 
+    	'created_at', 
+    	'updated_at'
     ];
 
 }

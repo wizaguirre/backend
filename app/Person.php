@@ -13,4 +13,10 @@ class Person extends Model
     protected $fillable = [
     	'name', 'description'
     ];
+
+    protected $hidden = [
+    	'deleted_at', 
+    	'created_at', 
+    	'updated_at'
+    ];     
 }
