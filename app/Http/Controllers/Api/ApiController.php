@@ -71,5 +71,11 @@ class ApiController extends Controller
 
     	$data->save();
 
+		return response()->json([
+		    'Status' => 'OK',
+		    'Mensaje' => 'Registro guardado con éxito'
+		], 200);
+       
+
 	}
 }
