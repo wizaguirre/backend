@@ -18,6 +18,7 @@ class CreateDataTable extends Migration
             $table->increments('id');
             $table->date('date');
             $table->datetime('datetime');
+            $table->integer('count');
 
             $table->integer('customer_id')->unsigned();
             $table->foreign('customer_id')->references('id')->on('customers');            

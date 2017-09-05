@@ -14,6 +14,7 @@ class DataTableSeeder extends Seeder
         DB::table('data')->insert([
             'date' => date('Y-m-d'),
             'datetime' => date('Y-m-d H:i:s'),
+            'count' => 1,
             'customer_id' => 1,
             'gateway_id' => 1,
             'people_id' => 1,

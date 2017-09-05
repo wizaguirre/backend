@@ -1,5 +1,6 @@
 <?php
-
+use App\User;
+use App\Role;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +15,19 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/chart', function () {
+
+$chart = Charts::database(User::all(), 'bar', 'highcharts')
+    ->elementLabel("Total")
+    ->dimensions(1000, 500)
+    ->responsive(false)
+    ->groupBy('role_id', null, [1 => 'Administradores', 2 => 'Clientes']);
+
+    return view('test', ['chart' => $chart]);
+});
+
 
 Auth::routes();
 
