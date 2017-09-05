@@ -66,6 +66,7 @@ class ApiController extends Controller
     	$data->customer_id = $request->input('customer_id');
     	$data->gateway_id = $request->input('gateway_id');
     	$data->people_id = $request->input('people_id');
+    	$data->count = $request->input('count');
     	$data->created_at = date('Y-m-d H:i:s');
     	$data->updated_at = date('Y-m-d H:i:s');
 
