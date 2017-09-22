@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use App\Data;
+use App\Gateway;
 
 class DashboardController extends Controller
 {
@@ -26,18 +27,47 @@ class DashboardController extends Controller
      */
     public function index(){
 
+        // PIE BY GENDER
+
+        $masculino = \DB::table('data')
+                        ->join('people', 'people.id', '=', 'data.people_id')
+                        ->select('count', 'people.gender')
+                        ->where('people.gender', '=', 'Masculino')
+                        ->sum('count');
+
+        $femenino =  \DB::table('data')
+                        ->join('people', 'people.id', '=', 'data.people_id')
+                        ->select('count', 'people.gender')
+                        ->where('people.gender', '=', 'Femenino')
+                        ->sum('count');
+
         $bySex = \Charts::create('pie', 'c3')
             ->title('Sexo')
             ->labels(['Masculino', 'Femenino'])
-            ->values([52,48])
+            ->values([$masculino,$femenino])
             ->dimensions(0,500)
             ->responsive(true);
+
+
+        // TOTAL BY GATEWAY
+
+        // Obtener el listado de las puertas por cliente
+        $rs = Gateway::all()->where('customer_id', '=', 1);
+
+        $gateways = [];
+        foreach ($rs as $gateway) {
+            
+            $gateways[] = $gateway->name;
+        }
+
+        // Obtener el conteo de visitantes por puerta por cliente
+        
 
         $byGateway = \Charts::create('line', 'highcharts')
             ->title('Total por Puerta')
             ->elementLabel('Total')
-            ->labels(['Puerta 1', 'Puerta 2', 'Puerta 3'])
-            ->values([5,10,20])
+            ->labels($gateways)
+            ->values([5,10])
             ->dimensions(0,100)
             ->responsive(true);
 
@@ -49,7 +79,6 @@ class DashboardController extends Controller
             ->dimensions(0,100)
             ->responsive(true);
 
-        //return view('admin.dashboard', ['bySex' => $bySex], ['byType' => $byType], ['byGateway' => $byGateway]);
         return view('admin.dashboard')->with('bySex', $bySex)->with('byType', $byType)->with('byGateway', $byGateway);    
     }
 

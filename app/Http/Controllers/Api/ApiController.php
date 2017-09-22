@@ -37,10 +37,7 @@ class ApiController extends Controller
 
 	}
 
-	public function gatewaysByCustomer($id){
-
-		// $gateways = \App\Gateway::with('customer')->get();
-		// return $gateways;
+	public static function gatewaysByCustomer($id){
 
 		$gateways = \DB::table('gateways')
             ->select('gateways.id', 'gateways.name', 'gateways.description', 'customers.name' )
@@ -56,6 +53,28 @@ class ApiController extends Controller
 
 		$people = \App\Person::all();
 		return $people;
+	}
+
+	public static function totalVisitorsbyCustomer($id){
+		 
+		 $data = \DB::table('data')
+		 			->where('customer_id', '=', $id)
+		 			->sum('count');
+		 			
+		 return $data;
+		 
+	}
+
+	public static function totalVisitorsbyGender($gender){
+
+		$data = \DB::table('data')
+		            ->join('people', 'people.id', '=', 'data.people_id')
+		            ->select('count', 'people.gender')
+		            ->where('people.gender', '=', $gender)
+		            ->sum('count');
+
+		return $data;
+
 	}
 
 	public function storeData(Request $request){

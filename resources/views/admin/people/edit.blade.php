@@ -52,6 +52,18 @@
                       <form action="" method="POST">
                       {{ csrf_field() }}
                         <div class="form-group">
+                          <label class="form-control-label">Género</label>
+                           <select name="gender" class="form-control">
+                           @if($person->gender == "Masculino")
+                              <option value="Masculino" selected>Masculino</option>
+                              <option value="Femenino">Fenemino</option>
+                            @else
+                              <option value="Masculino">Masculino</option>
+                              <option value="Femenino" selected>Fenemino</option>
+                          @endif                    
+                          </select>
+                        </div>                      
+                        <div class="form-group">
                           <label class="form-control-label">Nombre</label>
                           <input type="text" name="name" placeholder="Nombre del tipo de persona" class="form-control" value="{{ old('name', $person->name) }}">
                         </div>

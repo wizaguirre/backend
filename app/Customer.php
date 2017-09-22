@@ -24,4 +24,8 @@ class Customer extends Model
     	'updated_at'
     ];
 
+    public function users(){
+      return $this->hasMany('App\User');
+    } 
+
 }

@@ -50,6 +50,13 @@
                       <form action="" method="POST">
                       {{ csrf_field() }}
                         <div class="form-group">
+                          <label class="form-control-label">Género</label>
+                           <select name="gender" class="form-control">
+                              <option value="Masculino">Masculino</option>
+                              <option value="Femenino">Fenemino</option>
+                          </select>
+                        </div>                      
+                        <div class="form-group">
                           <label class="form-control-label">Nombre</label>
                           <input type="text" name="name" placeholder="Nombre del tipo de persona" class="form-control" value="{{ old('name') }}">
                         </div>
@@ -83,6 +90,7 @@
                         <thead>
                           <tr>
                             <th>#</th>
+                            <th>Género</th>
                             <th>Nombre</th>
                             <th>Descripción</th>                            
                             <th>Acciones</th>
@@ -93,6 +101,7 @@
                           @foreach($people as $person)
                           <tr>
                             <th scope="row">{{ $i }}</th>
+                            <td>{{ $person->gender }}</td>
                             <td>{{ $person->name }}</td>
                             <td>{{ $person->description }}</td> 
                             <td>

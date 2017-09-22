@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 Use App\User;
 Use App\Role;
+use App\Customer;
 
 class UserController extends Controller
 {
@@ -29,7 +30,8 @@ class UserController extends Controller
         //$users = User::where('role', 1)->get();
         $users = User::all();
         $roles = Role::all();
-        return view('admin.users.index')->with(compact('users'))->with(compact('roles'));
+        $customers = Customer::all();
+        return view('admin.users.index')->with(compact('users'))->with(compact('roles'))->with(compact('customers'));
     }
 
     public function store(Request $request){
@@ -38,6 +40,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
+            'customer_id' => 'required'
     	];
 
     	$messages = [
@@ -50,6 +53,7 @@ class UserController extends Controller
     		'email.unique' => 'El Email ingresado ya se encuentra en uso.',
     		'password.required' => 'La contraseña es obligatorio.',
     		'password.min' => 'La contraseña debe ser almenos de 6 caracteres.',
+            'customer_id.required' => 'El cliente es obligatorio',
     	];
 
     	$this->validate($request, $rules, $messages);
@@ -59,6 +63,7 @@ class UserController extends Controller
     	$user->email = $request->input('email');
     	$user->password = bcrypt($request->input('password'));
     	$user->role_id = $request->input('role_id');;
+        $user->customer_id = $request->input('customer_id');
     	$user->save();
 
     	return back()->with('notification', 'El usuario ha sido creado con éxito.');    	
@@ -68,8 +73,9 @@ class UserController extends Controller
 
     	$user = User::find($id);
         $roles = Role::all();
+        $customers = Customer::all();
 
-    	return view('admin.users.edit')->with(compact('user'))->with(compact('roles'));
+    	return view('admin.users.edit')->with(compact('user'))->with(compact('roles'))->with(compact('customers'));
 
     }
 
@@ -77,15 +83,17 @@ class UserController extends Controller
     public function update($id, Request $request){
 
         $rules = [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',           
             'password' => 'nullable|min:6',
+            'customer_id' => 'required'
         ];
 
         $messages = [
             'name.required' => 'El nombre del usuario es obligatorio.',
             'name.max' =>'El nombre de usuario es demasiado largo.',
-            'name.string' => 'El nombre solo acepta caracteres alfabeticos.',
+            'name.string' => 'El nombre solo acepta caracteres alfabeticos.',         
             'password.min' => 'La contraseña debe ser almenos de 6 caracteres.',
+            'customer_id.required' => 'El cliente es obligatorio',          
         ];
 
         $this->validate($request, $rules, $messages);
@@ -97,6 +105,7 @@ class UserController extends Controller
         if($password)
             $user->password = bcrypt($password);
 
+        $user->customer_id = $request->input('customer_id');
         $user->save();
 
         return back()->with('notification', 'El usuario ha sido modificado con éxito.');

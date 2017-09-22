@@ -25,7 +25,14 @@
                         <div role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-violet"></div>
                       </div>
                     </div>
-                    <div class="number"><strong>3</strong></div>
+                    <div class="number">
+                      <strong>
+                        <?php  
+                          use App\Http\Controllers\Api\ApiController;
+                          echo count(ApiController::gatewaysByCustomer( Auth::user()->customer_id ));
+                        ?>
+                      </strong>
+                    </div>
                   </div>
                 </div>
                 <!-- Item -->
@@ -37,7 +44,13 @@
                         <div role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-red"></div>
                       </div>
                     </div>
-                    <div class="number"><strong>82</strong></div>
+                    <div class="number">
+                      <strong>
+                        <?php                            
+                          echo ApiController::totalVisitorsbyCustomer(Auth::user()->customer_id );
+                        ?>
+                      </strong>
+                    </div>
                   </div>
                 </div>
                 <!-- Item -->
@@ -49,7 +62,13 @@
                         <div role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-green"></div>
                       </div>
                     </div>
-                    <div class="number"><strong>42</strong></div>
+                    <div class="number">
+                      <strong>
+                        <?php
+                          echo ApiController::totalVisitorsbyGender("Masculino");
+                        ?>
+                      </strong>
+                    </div>
                   </div>
                 </div>
                 <!-- Item -->
@@ -61,7 +80,13 @@
                         <div role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-orange"></div>
                       </div>
                     </div>
-                    <div class="number"><strong>40</strong></div>
+                    <div class="number">
+                      <strong>
+                        <?php
+                          echo ApiController::totalVisitorsbyGender("Femenino");
+                        ?>                        
+                      </strong>
+                    </div>
                   </div>
                 </div>
               </div>

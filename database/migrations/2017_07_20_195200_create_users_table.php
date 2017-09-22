@@ -17,10 +17,13 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password');   
 
             $table->integer('role_id')->unsigned();
             $table->foreign('role_id')->references('id')->on('roles');            
+
+            $table->integer('customer_id')->unsigned();
+            $table->foreign('customer_id')->references('id')->on('customers'); 
 
             $table->rememberToken();
             $table->softDeletes();

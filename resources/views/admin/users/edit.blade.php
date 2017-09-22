@@ -58,7 +58,8 @@
                         </div>                      
                         <div class="form-group">
                           <label class="form-control-label">Email</label>
-                          <input type="email" name="email" placeholder="Correo electrónico" class="form-control" value="{{ old('email', $user->email) }}">
+                          <input type="email" name="email" placeholder="Correo electrónico" class="form-control" value="{{ old('email', $user->email) }}" disabled>
+                          <small class="form-text">* El email no se puede editar</small>
                         </div>
                         <div class="form-group">
                           <label class="form-control-label">Rol</label>
@@ -71,12 +72,24 @@
                               @endif
                             @endforeach
                           </select> 
-                        </div>                         
+                        </div>
                         <div class="form-group">       
                           <label class="form-control-label">Contraseña</label>
                           <input type="text" name="password" placeholder="Contraseña" class="form-control" >
                           <small class="form-text">* Digitar en caso de querer cambiar</small>
                         </div>
+                        <div class="form-group">
+                          <label class="form-control-label">Cliente</label>
+                           <select name="customer_id" class="form-control">
+                           @foreach($customers as $customer)
+                            @if ($customer->id == $user->customer->id)
+                              <option value={{ $customer->id }} selected>{{ $customer->name }}</option>
+                            @else
+                              <option value={{ $customer->id }}>{{ $customer->name }}</option> 
+                            @endif
+                            @endforeach
+                          </select> 
+                        </div>                         
                         <div class="form-group">       
                           <input type="submit" value="Actualizar" class="btn btn-primary">
                         </div>

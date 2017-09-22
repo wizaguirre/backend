@@ -70,6 +70,16 @@
                           <label class="form-control-label">Contraseña</label>
                           <input type="text" name="password" placeholder="Contraseña" class="form-control" value="{{ old('password', str_random(8)) }}">
                         </div>
+
+                        <div class="form-group">
+                          <label class="form-control-label">Cliente</label>
+                           <select name="customer_id" class="form-control">
+                           @foreach($customers as $customer)
+                            <option value={{ $customer->id }}>{{ $customer->name }}</option>
+                            @endforeach
+                          </select> 
+                        </div> 
+
                         <div class="form-group">       
                           <input type="submit" value="Guardar" class="btn btn-primary">
                         </div>
@@ -99,6 +109,7 @@
                             <th>Nombre</th>
                             <th>Email</th>
                             <th>Rol</th>
+                            <th>Cliente</th>
                             <th>Acciones</th>
                           </tr>
                         </thead>
@@ -110,6 +121,7 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->role->name }}</td>
+                            <td>{{ $user->customer->name }}</td>
                             <td>
                                 <a href="/seguridad/usuario/{{ $user->id }}" class="btn btn-sm btn-primary" title="Editar">
                                   <i class="fa fa-pencil"></i>

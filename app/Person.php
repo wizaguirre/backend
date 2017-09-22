@@ -11,7 +11,7 @@ class Person extends Model
 	use SoftDeletes;
 
     protected $fillable = [
-    	'name', 'description'
+    	'gender', 'name', 'description'
     ];
 
     protected $hidden = [

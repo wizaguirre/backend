@@ -28,11 +28,15 @@ class PersonController extends Controller
 
 
     	$rules = [
+            'gender' => 'required|string|max:255', 
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255'
     	];
 
     	$messages = [
+            'gender.required' => 'El género del tipo de persona es obligatorio.',
+            'gender.max' =>'El género del tipo de persona es demasiado largo.',
+            'gender.string' => 'El género del tipo de persona solo acepta caracteres alfabeticos.',           
     		'name.required' => 'El nombre del tipo de persona es obligatorio.',
     		'name.max' =>'El nombre del tipo de persona es demasiado largo.',
             'name.string' => 'El nombre del tipo de persona solo acepta caracteres alfabeticos.',
@@ -44,6 +48,7 @@ class PersonController extends Controller
     	$this->validate($request, $rules, $messages);
 
     	$person = new Person();
+        $person->gender = $request->input('gender');
     	$person->name = $request->input('name');
     	$person->description = $request->input('description');
 
@@ -61,11 +66,15 @@ class PersonController extends Controller
     public function update($id, Request $request){
 
     	$rules = [
+            'gender' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255'
     	];
 
     	$messages = [
+            'gender.required' => 'El género del tipo de persona es obligatorio.',
+            'gender.max' =>'El género del tipo de persona es demasiado largo.',
+            'gender.string' => 'El género del tipo de persona solo acepta caracteres alfabeticos.',         
     		'name.required' => 'El nombre del tipo de persona es obligatorio.',
     		'name.max' =>'El nombre del tipo de persona es demasiado largo.',
             'name.string' => 'El nombre del tipo de persona solo acepta caracteres alfabeticos.',
@@ -77,6 +86,7 @@ class PersonController extends Controller
     	$this->validate($request, $rules, $messages);
 
         $person = Person::find($id);
+        $person->gender = $request->input('gender');
         $person->name = $request->input('name');
         $person->description = $request->input('description');        
 

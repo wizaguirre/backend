@@ -16,6 +16,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'wizaguirrel@gmail.com',
             'password' => bcrypt('123456'),
             'role_id' => 1,
+            'customer_id' => 1,
             'created_at' => date('Y-m-d H:i:s'), 
             'updated_at'=> date('Y-m-d H:i:s')
         ]);
@@ -25,6 +26,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'maria@gmail.com',
             'password' => bcrypt('123456'),
             'role_id' => 2,
+            'customer_id' => 1,            
             'created_at' => date('Y-m-d H:i:s'), 
             'updated_at'=> date('Y-m-d H:i:s')
         ]);        
