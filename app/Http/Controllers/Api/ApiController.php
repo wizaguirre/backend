@@ -25,9 +25,6 @@ class ApiController extends Controller
 
 	public function gateways(){
 
-		// $gateways = \App\Gateway::with('customer')->get();
-		// return $gateways;
-
 		$gateways = \DB::table('gateways')
             ->select('gateways.id', 'gateways.name', 'gateways.description', 'customers.name' )
             ->join('customers', 'gateways.customer_id', '=', 'customers.id')

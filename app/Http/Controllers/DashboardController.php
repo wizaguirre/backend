@@ -7,6 +7,8 @@ use App\User;
 use App\Role;
 use App\Data;
 use App\Gateway;
+use App\Person;
+use Auth;
 
 class DashboardController extends Controller
 {
@@ -27,6 +29,15 @@ class DashboardController extends Controller
      */
     public function index(){
 
+        $bySex = $this->graphTotalbyGender();
+        $byGateway = $this->graphTotalVisitorsbyGateway(Auth::user()->customer_id);
+        $byType = $this->graphTotalbyPeople(Auth::user()->customer_id);
+
+        return view('admin.dashboard')->with('bySex', $bySex)->with('byType', $byType)->with('byGateway', $byGateway);    
+    }
+
+    public function graphTotalbyGender(){
+
         // PIE BY GENDER
 
         $masculino = \DB::table('data')
@@ -41,18 +52,21 @@ class DashboardController extends Controller
                         ->where('people.gender', '=', 'Femenino')
                         ->sum('count');
 
-        $bySex = \Charts::create('pie', 'c3')
+        $graph = \Charts::create('pie', 'c3')
             ->title('Sexo')
             ->labels(['Masculino', 'Femenino'])
             ->values([$masculino,$femenino])
             ->dimensions(0,500)
             ->responsive(true);
+        return $graph;
+    }
 
+    public function graphTotalVisitorsbyGateway($customer_id){
 
         // TOTAL BY GATEWAY
 
         // Obtener el listado de las puertas por cliente
-        $rs = Gateway::all()->where('customer_id', '=', 1);
+        $rs = Gateway::all()->where('customer_id', '=', $customer_id);
 
         $gateways = [];
         foreach ($rs as $gateway) {
@@ -61,9 +75,7 @@ class DashboardController extends Controller
         }
 
         // Obtener el conteo de visitantes por puerta por cliente
-        
-
-        $byGateway = \Charts::create('line', 'highcharts')
+        $graph = \Charts::create('line', 'highcharts')
             ->title('Total por Puerta')
             ->elementLabel('Total')
             ->labels($gateways)
@@ -71,15 +83,31 @@ class DashboardController extends Controller
             ->dimensions(0,100)
             ->responsive(true);
 
-        $byType = \Charts::create('bar', 'highcharts')
+        return $graph;
+    }
+
+    public function graphTotalbyPeople($customer_id){
+
+        // TOTAL BY PEOPLE
+
+        // Obtener el listado de las puertas por cliente
+        $rs = Person::all();
+
+        $people = [];
+        foreach ($rs as $person) {
+            
+            $people[] = $person->name;
+        }
+
+        $graph = \Charts::create('bar', 'highcharts')
             ->title('Total por tipo de persona')
             ->elementLabel('Total')
-            ->labels(['Anciano Varón', 'Anciano Mujer', 'Adulto varón', 'Adulto Mujer', 'Adolescente varón', 'Adolescente mujer', 'Niño', 'Niña'])
+            ->labels($people)
             ->values([12,15,36,22,13,17,8,3])
             ->dimensions(0,100)
             ->responsive(true);
 
-        return view('admin.dashboard')->with('bySex', $bySex)->with('byType', $byType)->with('byGateway', $byGateway);    
+        return $graph;
     }
 
 }
