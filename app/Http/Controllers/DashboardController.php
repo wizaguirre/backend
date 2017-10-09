@@ -12,44 +12,51 @@ use Auth;
 
 class DashboardController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
     public function __construct()
     {
         $this->middleware('auth');
+
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(){
+    public function index(Request $request){
 
-        $bySex = $this->graphTotalbyGender();
-        $byGateway = $this->graphTotalVisitorsbyGateway(Auth::user()->customer_id);
-        $byType = $this->graphTotalbyPeople(Auth::user()->customer_id);
+        // Si se recibe el rango de fecha del formulario de Dashboard, se asigna el rango, 
+        // sino se muestran con la fecha del día actual.
+        if($request->input('from') && $request->input('to')) {
+
+            $from = $request->input('from');
+            $to = $request->input('to');
+
+        }
+        else {
+
+            $from = date('Y-m-d H:m:s');
+            $to = date('Y-m-d H:m:s');
+        }
+
+
+        $bySex = $this->graphTotalbyGender($from, $to, Auth::user()->customer_id);
+        $byGateway = $this->graphTotalVisitorsbyGateway($from, $to, Auth::user()->customer_id);
+        $byType = $this->graphTotalbyPeople($from, $to, Auth::user()->customer_id);
 
         return view('admin.dashboard')->with('bySex', $bySex)->with('byType', $byType)->with('byGateway', $byGateway);    
     }
 
-    public function graphTotalbyGender(){
-
-        // PIE BY GENDER
+    public function graphTotalbyGender($from, $to, $customer_id){        
 
         $masculino = \DB::table('data')
                         ->join('people', 'people.id', '=', 'data.people_id')
-                        ->select('count', 'people.gender')
+                        ->select('count', 'datetime', 'people.gender')
                         ->where('people.gender', '=', 'Masculino')
+                        ->whereBetween('datetime', [$from, $to])
                         ->sum('count');
 
         $femenino =  \DB::table('data')
                         ->join('people', 'people.id', '=', 'data.people_id')
-                        ->select('count', 'people.gender')
+                        ->select('count', 'created_at','people.gender')
                         ->where('people.gender', '=', 'Femenino')
+                        ->whereBetween('datetime', [$from, $to])
                         ->sum('count');
 
         $graph = \Charts::create('pie', 'c3')
@@ -58,52 +65,71 @@ class DashboardController extends Controller
             ->values([$masculino,$femenino])
             ->dimensions(0,500)
             ->responsive(true);
+            
         return $graph;
     }
 
-    public function graphTotalVisitorsbyGateway($customer_id){
+    public function graphTotalVisitorsbyGateway($from, $to, $customer_id){
 
         // TOTAL BY GATEWAY
-
-        // Obtener el listado de las puertas por cliente
-        $rs = Gateway::all()->where('customer_id', '=', $customer_id);
+        $query = \DB::table('data')
+                    ->join('gateways', 'gateways.id', '=', 'data.gateway_id')
+                    ->selectRAW('sum(count) as total, gateways.name')
+                    ->where('data.customer_id', '=', $customer_id)
+                    ->whereBetween('data.datetime', [$from, $to])                    
+                    ->groupBy('gateways.name')                    
+                    ->get();
 
         $gateways = [];
-        foreach ($rs as $gateway) {
-            
+        $totales = [];
+
+        foreach($query as $gateway){
             $gateways[] = $gateway->name;
         }
 
+        foreach($query as $count){
+            $totales[] = $count->total;
+        }
+
         // Obtener el conteo de visitantes por puerta por cliente
-        $graph = \Charts::create('line', 'highcharts')
+        $graph = \Charts::create('bar', 'highcharts')
             ->title('Total por Puerta')
             ->elementLabel('Total')
             ->labels($gateways)
-            ->values([5,10])
+            ->values($totales)
             ->dimensions(0,100)
             ->responsive(true);
 
         return $graph;
     }
 
-    public function graphTotalbyPeople($customer_id){
+    public function graphTotalbyPeople($from, $to, $customer_id){
 
         // TOTAL BY PEOPLE
-
-        // Obtener el listado de las puertas por cliente
-        $rs = Person::all();
+        $query = \DB::table('data')
+                    ->join('people', 'people.id', '=', 'data.people_id')
+                    ->selectRAW('sum(count) as total, people.name')
+                    ->where('data.customer_id', '=', $customer_id)
+                    ->whereBetween('data.datetime', [$from, $to])                    
+                    ->groupBy('people.name')                    
+                    ->get();
 
         $people = [];
-        foreach ($rs as $person) {
-            
+        $totales = [];
+
+        foreach($query as $person){
             $people[] = $person->name;
         }
 
-        $graph = \Charts::create('bar', 'highcharts')
+        foreach($query as $count){
+            $totales[] = $count->total;
+        }
+
+        $graph = \Charts::create('line', 'highcharts')
             ->title('Total por tipo de persona')
             ->elementLabel('Total')
             ->labels($people)
-            ->values([12,15,36,22,13,17,8,3])
+            ->values($totales)
             ->dimensions(0,100)
             ->responsive(true);
 

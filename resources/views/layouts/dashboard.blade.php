@@ -165,7 +165,7 @@
               <p>B@ckend &copy; 2017</p>
             </div>
             <div class="col-sm-6 text-right">
-              <p>Powered by <a href="http://www.beesys.net" class="external">Beê Business Suite</a></p>
+              <p>Powered by <a href="#" class="external"><strong>Solides</strong></a></p>
             </div>
           </div>
         </div>

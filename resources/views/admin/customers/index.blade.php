@@ -106,7 +106,7 @@
                           <?php $i =1 ?>
                           @foreach($customers as $customer)
                           <tr>
-                            <th scope="row">{{ $i }}</th>
+                            <td scope="row">{{ $i }}</td>
                             <td>{{ $customer->name }}</td>
                             <td>{{ $customer->contact }}</td>
                             <td>{{ $customer->email }}</td>
@@ -128,7 +128,6 @@
                   </div>
                 </div>
               </div>
-
             </div>
           </section>                    
 @endsection

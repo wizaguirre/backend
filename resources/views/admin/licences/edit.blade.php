@@ -1,9 +1,5 @@
 @extends('layouts.dashboard')
 
-@section('header')
-	<link href="{{ asset('css/datepicker.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
         <div class="content-inner">
           <!-- Page Header-->

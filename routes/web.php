@@ -20,6 +20,7 @@ Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/dashboard', 'DashboardController@index');
+Route::post('/dashboard', 'DashboardController@index');
 
 Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function(){
 
@@ -75,6 +76,6 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function(){
 	Route::get('/acceso/{id}', 'GatewayController@edit');
 	Route::post('/acceso/{id}', 'GatewayController@update');
 
-	Route::get('/acceso/{id}/eliminar', 'GatewayController@delete');	
+	Route::get('/acceso/{id}/eliminar', 'GatewayController@delete');
 });
 

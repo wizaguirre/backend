@@ -9,7 +9,21 @@
           <!-- Page Header-->
           <header class="page-header">
             <div class="container-fluid">
-              <h2 class="no-margin-bottom">Dashboard</h2>
+              <div style="display:inline-block;">
+                <h2 class="no-margin-bottom">Dashboard</h2>
+              </div>
+              <div style="display:inline-block; float:right;">
+                <form action="" method="POST">
+                {{ csrf_field() }}
+                  <div class="form-group">
+                    <label class="form-control-label">Desde: </label>
+                    <input type="text" name="from">
+                    <label class="form-control-label">Hasta: </label>
+                    <input type="text" name="to">
+                    <input type="submit" value="Aplicar">
+                  </div>
+                </form>
+              </div>
             </div>
           </header>
           <!-- Dashboard Counts Section-->
@@ -111,14 +125,12 @@
             <div class="container-fluid">
               <div class="row">
 
-                <!-- Line Chart            -->
                 <div class="chart col-lg-6 col-12">
                   <div class="line-chart has-shadow bg-white">
                     {!! $bySex->html() !!}
                   </div>
                 </div>
 
-                <!-- Line Chart            -->
                 <div class="chart col-lg-6 col-12">
                   <div class="line-chart has-shadow bg-white">
                     {!! $byGateway->html() !!}
