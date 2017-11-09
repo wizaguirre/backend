@@ -67,9 +67,11 @@ class ApiController extends Controller
 		$data = \DB::table('data')
 		            ->join('people', 'people.id', '=', 'data.people_id')
 		            ->select('count', 'people.gender')
-		            ->where('people.gender', '=', $gender)
+		            ->where([
+		            	['people.gender', '=', $gender],
+		            	
+		            ])
 		            ->sum('count');
-
 		return $data;
 
 	}

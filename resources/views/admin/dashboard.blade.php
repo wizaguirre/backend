@@ -1,7 +1,9 @@
 @extends('layouts.dashboard')
 
 @section('header')
+ 
   {!! Charts::styles() !!}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 @endsection
 
 @section('content')
@@ -13,13 +15,14 @@
                 <h2 class="no-margin-bottom">Dashboard</h2>
               </div>
               <div style="display:inline-block; float:right;">
+
                 <form action="" method="POST">
                 {{ csrf_field() }}
                   <div class="form-group">
                     <label class="form-control-label">Desde: </label>
-                    <input type="text" name="from">
+                    <input type="text" name="from" id="dp_from">
                     <label class="form-control-label">Hasta: </label>
-                    <input type="text" name="to">
+                    <input type="text" name="to" id="dp_to">
                     <input type="submit" value="Aplicar">
                   </div>
                 </form>
@@ -61,7 +64,7 @@
                     <div class="number">
                       <strong>
                         <?php                            
-                          echo ApiController::totalVisitorsbyCustomer(Auth::user()->customer_id );
+                          echo ApiController::totalVisitorsbyCustomer( Auth::user()->customer_id );
                         ?>
                       </strong>
                     </div>
@@ -113,7 +116,11 @@
               <div class="row bg-white has-shadow">
 
                 <div class="col-sm-12">
-                  {!! $byType->html() !!}
+                  @if($byType == null)
+                    <p>No hay datos para mostrar</p>                    
+                  @else
+                    {!! $byType->html() !!}
+                  @endif                    
                 </div>
 
               </div>  
@@ -133,7 +140,7 @@
 
                 <div class="chart col-lg-6 col-12">
                   <div class="line-chart has-shadow bg-white">
-                    {!! $byGateway->html() !!}
+                    {!! $byGateway->html() !!}                
                   </div>
                 </div>
 
@@ -147,5 +154,21 @@
   {!! Charts::scripts() !!}
   {!! $bySex->script() !!}
   {!! $byGateway->script() !!}
-  {!! $byType->script() !!}  
+  {!! $byType->script() !!}
+  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <script>
+  $(function() {
+    $( "#dp_from" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: "yy-mm-dd"
+    });
+
+    $( "#dp_to" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: "yy-mm-dd"
+    });
+  });
+  </script>
 @endsection

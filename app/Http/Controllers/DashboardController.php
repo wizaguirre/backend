@@ -31,7 +31,7 @@ class DashboardController extends Controller
         }
         else {
 
-            $from = date('Y-m-d H:m:s');
+            $from = date('Y-m-d 00:00:00');
             $to = date('Y-m-d H:m:s');
         }
 

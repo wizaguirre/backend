@@ -18,8 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['middleware' => 'admin'], function(){
+	Route::get('/clientes', 'Api\ApiController@customers');
+});
 
-Route::get('/clientes', 'Api\ApiController@customers');
 Route::get('/cliente/{id}', 'Api\ApiController@customerById');
 
 Route::get('/puertas', 'Api\ApiController@gateways');
