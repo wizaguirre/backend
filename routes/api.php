@@ -18,14 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => 'admin'], function(){
+Route::group(['middleware' => 'auth:api'], function(){
 	Route::get('/clientes', 'Api\ApiController@customers');
+
+	Route::get('/cliente/{id}', 'Api\ApiController@customerById');
+
+	Route::get('/puertas', 'Api\ApiController@gateways');
+	Route::get('/puertascliente/{id}', 'Api\ApiController@gatewaysByCustomer');
+
+	Route::get('/personas', 'Api\ApiController@people');
+	Route::post('/guardar', 'Api\ApiController@storeData');
 });
 
-Route::get('/cliente/{id}', 'Api\ApiController@customerById');
-
-Route::get('/puertas', 'Api\ApiController@gateways');
-Route::get('/puertascliente/{id}', 'Api\ApiController@gatewaysByCustomer');
-
-Route::get('/personas', 'Api\ApiController@people');
-Route::post('/guardar', 'Api\ApiController@storeData');

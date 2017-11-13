@@ -4,6 +4,7 @@
  
   {!! Charts::styles() !!}
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="http://trentrichardson.com/examples/timepicker/jquery-ui-timepicker-addon.css">
 @endsection
 
 @section('content')
@@ -143,11 +144,10 @@
                     {!! $byGateway->html() !!}                
                   </div>
                 </div>
-
-
               </div>
             </div>
           </section>
+
 @endsection
 
 @section('footer')
@@ -156,19 +156,52 @@
   {!! $byGateway->script() !!}
   {!! $byType->script() !!}
   <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <script src="http://trentrichardson.com/examples/timepicker/jquery-ui-timepicker-addon.js"></script>
   <script>
   $(function() {
-    $( "#dp_from" ).datepicker({
+    $( "#dp_from" ).datetimepicker({
       changeMonth: true,
       changeYear: true,
-      dateFormat: "yy-mm-dd"
+      dateFormat: "yy-mm-dd",
+      timeText: "Tiempo",
+      hourText: "Hora",
+      minuteText: "Minutos",
+      secondText: "Segundos",
+      currentText: "Hora Actual",
+      closeText: "Cerrar"
     });
 
-    $( "#dp_to" ).datepicker({
+    $( "#dp_to" ).datetimepicker({
       changeMonth: true,
       changeYear: true,
-      dateFormat: "yy-mm-dd"
+      dateFormat: "yy-mm-dd",
+      timeText: "Tiempo",
+      hourText: "Hora",
+      minuteText: "Minutos",
+      secondText: "Segundos",
+      currentText: "Hora Actual",
+      closeText: "Cerrar"
     });
+
+    $.datepicker.regional['es'] = {
+      closeText: 'Cerrar',
+      prevText: '<Ant',
+      nextText: 'Sig>',
+      currentText: 'Hoy',
+      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+      dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+      dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+      dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+      weekHeader: 'Sm',
+      dateFormat: 'dd/mm/yy',
+      firstDay: 1,
+      isRTL: false,
+      showMonthAfterYear: false,
+      yearSuffix: ''
+  };
+  $.datepicker.setDefaults($.datepicker.regional['es']);
+
   });
   </script>
 @endsection
