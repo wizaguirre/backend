@@ -48,14 +48,20 @@ class DashboardController extends Controller
         $masculino = \DB::table('data')
                         ->join('people', 'people.id', '=', 'data.people_id')
                         ->select('count', 'datetime', 'people.gender')
-                        ->where('people.gender', '=', 'Masculino')
+                        ->where([
+                                 ['people.gender', '=', 'Masculino'],
+                                 ['customer_id', '=', $customer_id]
+                        ])
                         ->whereBetween('datetime', [$from, $to])
                         ->sum('count');
 
         $femenino =  \DB::table('data')
                         ->join('people', 'people.id', '=', 'data.people_id')
                         ->select('count', 'created_at','people.gender')
-                        ->where('people.gender', '=', 'Femenino')
+                        ->where([
+                                 ['people.gender', '=', 'Femenino'],
+                                 ['data.customer_id', '=', $customer_id]
+                        ])
                         ->whereBetween('datetime', [$from, $to])
                         ->sum('count');
 

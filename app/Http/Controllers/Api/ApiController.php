@@ -62,13 +62,14 @@ class ApiController extends Controller
 		 
 	}
 
-	public static function totalVisitorsbyGender($gender){
+	public static function totalVisitorsbyGender($gender, $id){
 
 		$data = \DB::table('data')
 		            ->join('people', 'people.id', '=', 'data.people_id')
 		            ->select('count', 'people.gender')
 		            ->where([
 		            	['people.gender', '=', $gender],
+		            	['data.customer_id', '=', $id]
 		            	
 		            ])
 		            ->sum('count');

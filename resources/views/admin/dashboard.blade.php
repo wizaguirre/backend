@@ -83,7 +83,7 @@
                     <div class="number">
                       <strong>
                         <?php
-                          echo ApiController::totalVisitorsbyGender("Masculino");
+                          echo ApiController::totalVisitorsbyGender("Masculino", Auth::user()->customer_id);
                         ?>
                       </strong>
                     </div>
@@ -101,7 +101,7 @@
                     <div class="number">
                       <strong>
                         <?php
-                          echo ApiController::totalVisitorsbyGender("Femenino");
+                          echo ApiController::totalVisitorsbyGender("Femenino", Auth::user()->customer_id);
                         ?>                        
                       </strong>
                     </div>
